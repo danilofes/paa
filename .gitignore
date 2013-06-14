@@ -1,1 +1,9 @@
+# Compiled
 bin
+
+# Latex
+*.log
+*.aux
+*.bbl
+*.blg
+*.synctex.gz
