@@ -14,6 +14,7 @@ jar: compile
 compile:
 	mkdir -p $(BIN)
 	javac -cp $(SRC) -d $(BIN) $(SRC)/org/danilofes/paa/tp2/Main.java
+	javac -cp $(SRC) -d $(BIN) $(SRC)/org/danilofes/paa/tp2/StatsMain.java
 
 clean:
 	rm -rf $(BIN) $(JARNAME) $(TP2)

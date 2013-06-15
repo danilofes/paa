@@ -20,7 +20,7 @@ public class Main {
 		WeightMatrix mx = WeightMatrix.SOBEL_X;
 		WeightMatrix my = WeightMatrix.SOBEL_Y;
 		if (matrixFile != null && !matrixFile.isEmpty()) {
-			BufferedReader reader = new BufferedReader(new FileReader("input/matrix.txt"));
+			BufferedReader reader = new BufferedReader(new FileReader(matrixFile));
 			try {
 				MatrixFileDecoder decoder = new MatrixFileDecoder();
 				WeightMatrix[] mTuple = decoder.read(reader);
