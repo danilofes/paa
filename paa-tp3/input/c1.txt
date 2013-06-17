@@ -1,0 +1,5 @@
+4
+Brasil     83 71 8 0 1 6 1
+França     80 79 3 1 0 0 2
+Inglaterra 78 78 6 6 0 0 0
+Argentina  77 82 3 1 2 0 0
