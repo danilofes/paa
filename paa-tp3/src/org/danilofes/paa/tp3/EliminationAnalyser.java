@@ -28,7 +28,7 @@ public class EliminationAnalyser {
 				eliminatedCount++;
 			}
 			
-			if (eliminatedCount > 1) {
+			if (eliminatedCount > 1 && eliminated) {
 				ps.println();
 			}
 			printReport(input, analysis, ps);
