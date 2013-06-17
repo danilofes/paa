@@ -124,7 +124,10 @@ public class EliminationAnalyser {
 		List<Integer> unreachable = analysis.getUnreachableTeams();
 		if (!unreachable.isEmpty()) {
 			for (Integer t : unreachable) {
-				ps.printf("%s já ganhou %d jogos e não pode ser alcançado.\n", input.teams[t], input.wins[t]);
+				ps.printf("%s ganhou um total de %d jogos.\n", input.teams[t], input.wins[t]);
+				ps.printf("Eles jogam entre si %d vezes.\n", 0);
+				ps.printf("Assim, em média, cada uma das equipes vence %d/%d = %d jogos.\n", input.wins[t], 1, input.wins[t]);
+				break;
 			}
 		} else {
 			List<Integer> unbeatable = analysis.getUnbeatableGroup();
