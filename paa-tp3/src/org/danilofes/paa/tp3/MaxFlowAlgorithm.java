@@ -1,6 +1,8 @@
 package org.danilofes.paa.tp3;
 
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 import org.danilofes.paa.tp3.FlowNetwork.Edge;
 import org.danilofes.paa.tp3.FlowNetwork.Vertex;
@@ -10,6 +12,8 @@ import org.danilofes.paa.tp3.FlowNetwork.Vertex;
  * que usa busca em laargura para encontrar caminhos que incrementem o fluxo.
  */
 public class MaxFlowAlgorithm {
+
+	Set<Integer> sTCut;
 
 	/**
 	 * Encontra o fluxo máximo de <code>source</code> para <code>sink</code> na rede <code>g</code>,
@@ -24,16 +28,21 @@ public class MaxFlowAlgorithm {
 		int maxFlow = 0;
 		
 		g.clearFlow();
+		this.sTCut = new HashSet<Integer>();
 		
 		do {
 			flow = this.augmentFlow(g, source, sink);
 			maxFlow += flow;
-			// Enquanto encontrar um caminha que aumenta o fluxo continua
+			// Enquanto encontrar um caminho que aumenta o fluxo continua
 		} while (flow > 0);
 		
 		return maxFlow;
 	}
 
+	public Set<Integer> getSCut() {
+		return this.sTCut;
+	}
+	
 	private static final int NIL = -1;
 	private static final int UNDEFINED = -2;
 
@@ -89,6 +98,13 @@ public class MaxFlowAlgorithm {
 				u = precursor[u];
 			}
 			return flow;
+		} else {
+			// Determina a partição S do corte S-T mínimo.
+			for (int i = 0; i < n; i++) {
+				if (precursor[i] != UNDEFINED) {
+					this.sTCut.add(i);
+				}
+			}
 		}
 		
 		return 0;

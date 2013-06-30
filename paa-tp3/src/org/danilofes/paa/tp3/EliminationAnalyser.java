@@ -2,9 +2,11 @@ package org.danilofes.paa.tp3;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import org.danilofes.paa.tp3.FlowNetwork.Edge;
 import org.danilofes.paa.tp3.FlowNetwork.Vertex;
 
 /**
@@ -70,36 +72,61 @@ public class EliminationAnalyser {
 		
 		// vértices dos jogos
 		int totalMatches = 0;
+		Map<Integer, Integer[]> matches = new HashMap<Integer, Integer[]>();
 		for (int i = 0; i < input.n; i++) {
 			for (int j = i + 1; j < input.n; j++) {
 				if (i != x && j != x) {
-					int matches = input.confrontsLeft[i][j];
-					if (matches > 0) {
-						totalMatches += matches;
+					int matchesToPlay = input.confrontsLeft[i][j];
+					if (matchesToPlay > 0) {
+						totalMatches += matchesToPlay;
 						Vertex matchIxJ = fn.addVertex();
-						fn.connect(source, matchIxJ, matches);
-						fn.connect(matchIxJ, teams[i], matches);
-						fn.connect(matchIxJ, teams[j], matches);
+						fn.connect(source, matchIxJ, matchesToPlay);
+						fn.connect(matchIxJ, teams[i], matchesToPlay);
+						fn.connect(matchIxJ, teams[j], matchesToPlay);
+						matches.put(matchIxJ.id, new Integer[]{i, j});
 					}
 				}
 			}
 		}
 		
-		// Encontra os fluxos mínimos.
+		// Encontra o fluxo máximo.
 		MaxFlowAlgorithm algorithm = new MaxFlowAlgorithm();
 		int maxFlow = algorithm.findMaxFlow(fn, source, sink);
 		
 		if (maxFlow < totalMatches) {
-			// time está eliminado
-			for (int i = 0; i < input.n; i++) {
-				if (i != x) {
-					Vertex u = teams[i];
-					Edge edge = u.edges.get(0);
-					if (fn.flow(u, sink) == edge.capacity) {
-						analysis.unbeatable(i);
-					}
+			// time está eliminado pois não existem atribuições para toda partida
+			
+			Set<Integer> sCut = algorithm.getSCut();
+			
+			for (int i = 0; i < teams.length; i++) {
+				if (sCut.contains(teams[i].id)) {
+					analysis.unbeatable(i);
 				}
 			}
+			
+//			for (Edge matchEdge : source.edges) {
+//				Vertex match = fn.vertex(matchEdge.v);
+//				if (fn.flow(source, match) < matchEdge.capacity) {
+//					// Aresta não saturada, então vencedor da partida não pode ser atribuído.
+//					// Logo, os dois times fazem parte do grupo que impede X de ser campeão.
+//					Integer[] matchTeams = matches.get(match.id);
+//					analysis.unbeatable(matchTeams[0]);
+//					analysis.unbeatable(matchTeams[1]);
+//				}
+//			}
+			
+//			for (int i = 0; i < input.n; i++) {
+//				if (i != x) {
+//					Vertex u = teams[i];
+//					Edge edge = u.edges.get(0);
+//					if (fn.flow(u, sink) == edge.capacity) {
+//						// TODO
+//						
+//						analysis.unbeatable(i);
+//					}
+//				}
+//			}
+			
 		}
 		
 		return analysis;
