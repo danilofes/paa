@@ -1,5 +1,6 @@
-# Compiled
+# tp2
 bin
+tp2.jar
 
 # Latex
 *.log
@@ -7,3 +8,7 @@ bin
 *.bbl
 *.blg
 *.synctex.gz
+
+# tp3
+tp3.jar
+out.txt
